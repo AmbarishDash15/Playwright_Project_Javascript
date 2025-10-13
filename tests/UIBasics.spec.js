@@ -13,7 +13,7 @@ test.skip('Page Playwright Test',async ({page}) => {
     await expect(page).toHaveTitle('Google');
 });
 
-test('Validate Incorrect Login Error',async ({browser}) => {
+test.skip('Validate Incorrect Login Error',async ({browser}) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto('http://www.rahulshettyacademy.com/loginpagePractise/');
@@ -24,13 +24,23 @@ test('Validate Incorrect Login Error',async ({browser}) => {
     await expect(page.locator('[style*="block"]')).toContain('Incorrect username/password.');
 });
 
-test.only('Validate Empty User Name Login Error',async ({browser}) => {
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    await page.goto('http://www.rahulshettyacademy.com/loginpagePractise/');
+test.skip('Validate Empty User Name Login Error',async ({page}) => {
+        await page.goto('http://www.rahulshettyacademy.com/loginpagePractise/');
     await page.locator('#username').fill('');
     await page.locator('[name="password"]').fill('learning');
     await page.locator('#signInBtn').click();
     console.log(await page.locator('[style*="block"]').textContent());
     await expect(page.locator('[style*="block"]')).toContainText('Empty username/password.');
+});
+
+test.only('Get Login Credentials from page',async ({page}) => {
+    //const context = await browser.newContext();
+    //const page = await context.newPage();
+    await page.goto('http://www.rahulshettyacademy.com/loginpagePractise/');
+    await page.waitForLoadState('networkidle');
+    const loginStringArr = (await page.locator('.text-center.text-white').textContent()).split(' ');
+    const userName = await loginStringArr[2];
+    const passWord = await loginStringArr[5].split(')')[0];
+    await console.log('User Name : '+userName+' and Password : '+passWord)
+
 });
