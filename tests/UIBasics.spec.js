@@ -21,7 +21,7 @@ test('Validate Incorrect Login Error',async ({browser}) => {
     await page.locator('[name="password"]').fill('learning');
     await page.locator('#signInBtn').click();
     console.log(await page.locator('[style*="block"]').textContent());
-    await expect(page.locator('[style*="block"]')).toContain('Incorrect username/password.');
+    await expect(page.locator('[style*="block"]')).toContainText('Incorrect username/password.');
 });
 
 test('Validate Empty User Name Login Error',async ({page}) => {
@@ -70,6 +70,7 @@ test('Interact Login page UI elements',async ({page}) => {
 test('Get Login Credentials from page and Login',async ({page}) => {
     const userNameField = page.locator('#username');
     const passwordField = page.locator('[name="password"]');
+    const chkBxTnC = page.locator('#terms');
     const signInButton = page.locator('#signInBtn');
     const cardTitles = page.locator('h4.card-title');
     await page.goto('http://www.rahulshettyacademy.com/loginpagePractise/');
@@ -79,13 +80,15 @@ test('Get Login Credentials from page and Login',async ({page}) => {
     const passWordStr = await loginStringArr[6].split(')')[0];
     await userNameField.fill(userNameStr);
     await passwordField.fill(passWordStr);
+    await chkBxTnC.check();
     await signInButton.click();
+    await cardTitles.first().waitFor();
     await expect(page.locator('div.container > a.navbar-brand')).toBeVisible();
     //await cardTitles.first().waitFor();
     //console.log(await cardTitles.allTextContents());
 });
 
-test.only('Child window interaction',async ({browser}) => {
+test('Child window interaction',async ({browser}) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     const linkDoc = page.locator('[href*="documents-request"]');
