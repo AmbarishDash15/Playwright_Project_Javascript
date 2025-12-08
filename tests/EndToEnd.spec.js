@@ -76,7 +76,42 @@ test.only('End to End Client App',async({browser}) => {
     await expect(page.locator('[style*="green"]')).toBeVisible();
     await placeOrderBtn.click();
     await page.waitForLoadState('networkidle');
-    //await expect
+    const orderConfirmationLabel = page.locator('h1.hero-primary');
+    const orderIDField = page.locator('label.ng-star-inserted');
+    const prodNameConfPage = page.locator('td.m-3 div.title');
+    expect(await orderConfirmationLabel.textContent()).toContain('Thankyou for the order');
+    const orderIDFull = await orderIDField.textContent();
+    const orderID = orderIDFull.trim().split(' ')[1];
+    const ordersBtn = page.getByRole('button',{name: 'ORDERS'});
+    //console.log(orderID);
+    expect(await prodNameConfPage.textContent()).toBe(itemToBuy);
+    await ordersBtn.click();
+    expect(await page.locator('h1:has-text("Your Orders")')).toBeVisible();
+    const orderRows = page.locator('tr.ng-star-inserted');
+    const orderCount = await orderRows.count();
+    for (var i = 0;i<=orderCount;i++){
+        //console.log(await orderRows.nth(i).locator('th').textContent())
+        if(await orderRows.nth(i).locator('th').textContent() === orderID){
+            orderRows.nth(i).locator('button.btn-primary').click();
+            break;
+        }
+    }
+
+    const orderSummaryLabel = page.locator('div.email-title');
+    const orderSummOrderID = page.locator('div.col-text');
+    const deliveryAddress = page.locator('div.address').last();
+    const orderSummItemName = page.locator('div.title');
+
+
+    expect(await orderSummaryLabel.textContent()).toContain('order summary');
+    expect(await orderSummOrderID.textContent()).toBe(orderID);
+    expect(await deliveryAddress.locator('p.text').first().textContent()).toContain(loginEmail);
+    expect(await deliveryAddress.locator('p.text').last().textContent()).toContain(country);
+    expect(await orderSummItemName.textContent()).toContain(itemToBuy);
+
+
+
+
 
 
 
