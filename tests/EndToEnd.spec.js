@@ -87,7 +87,7 @@ test('End to End Client App',async({browser}) => {
     expect(await prodNameConfPage.textContent()).toBe(itemToBuy);
     await ordersBtn.click();
     await page.waitForLoadState('networkidle');
-    expect(await page.locator('h1:has-text("Your Orders")')).toBeVisible();
+    expect(await page.locator('h1.ng-star-inserted')).toContainText('Your Orders');
     const orderRows = page.locator('tr.ng-star-inserted');
     const orderCount = await orderRows.count();
     for (var i = 0;i<=orderCount;i++){
