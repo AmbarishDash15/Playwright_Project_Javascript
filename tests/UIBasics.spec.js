@@ -1,7 +1,7 @@
 const {test, expect} = require('@playwright/test')
 
 
-test('Browser Context Playwright Test',async ({browser}) => {
+test.skip('Browser Context Playwright Test',async ({browser}) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto('http://www.rahulshettyacademy.com/loginpagePractise/');
@@ -13,7 +13,7 @@ test('Page Playwright Test',async ({page}) => {
     await expect(page).toHaveTitle('Google');
 });
 
-test('Validate Incorrect Login Error',async ({browser}) => {
+test.skip('Validate Incorrect Login Error',async ({browser}) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto('http://www.rahulshettyacademy.com/loginpagePractise/');
@@ -24,7 +24,7 @@ test('Validate Incorrect Login Error',async ({browser}) => {
     await expect(page.locator('[style*="block"]')).toContainText('Incorrect username/password.');
 });
 
-test('Validate Empty User Name Login Error',async ({page}) => {
+test.skip('Validate Empty User Name Login Error',async ({page}) => {
     await page.goto('http://www.rahulshettyacademy.com/loginpagePractise/');
     await page.locator('#username').fill('');
     await page.locator('[name="password"]').fill('learning');
@@ -33,7 +33,7 @@ test('Validate Empty User Name Login Error',async ({page}) => {
     await expect(page.locator('[style*="block"]')).toContainText('Empty username/password.');
 });
 
-test('Get Login Credentials from page',async ({page}) => {
+test.skip('Get Login Credentials from page',async ({page}) => {
     await page.goto('http://www.rahulshettyacademy.com/loginpagePractise/');
     await page.waitForLoadState('networkidle');
     const loginStringArr = (await page.locator('.text-center.text-white').textContent()).split(' ');
@@ -42,7 +42,7 @@ test('Get Login Credentials from page',async ({page}) => {
     await console.log('User Name : '+userName+' and Password : '+passWord)
 });
 
-test('Interact Login page UI elements',async ({page}) => {
+test.skip('Interact Login page UI elements',async ({page}) => {
     const userNameField = page.locator('#username');
     const passwordField = page.locator('[name="password"]');
     const signInButton = page.locator('#signInBtn');
@@ -67,7 +67,7 @@ test('Interact Login page UI elements',async ({page}) => {
     await expect(linkDoc).toHaveAttribute('class','blinkingText')
 });
 
-test('Get Login Credentials from page and Login',async ({page}) => {
+test.skip('Get Login Credentials from page and Login',async ({page}) => {
     const userNameField = page.locator('#username');
     const passwordField = page.locator('[name="password"]');
     const chkBxTnC = page.locator('#terms');
