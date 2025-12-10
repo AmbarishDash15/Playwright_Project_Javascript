@@ -1,10 +1,20 @@
 const {test, expect} = require('@playwright/test')
 
 
-test.skip('Browser Context Playwright Test',async ({browser}) => {
+test.only('Browser Context Playwright Test',async ({browser}) => {
     const context = await browser.newContext();
     const page = await context.newPage();
-    await page.goto('http://www.rahulshettyacademy.com/loginpagePractise/');
+    await page.goto('https://rahulshettyacademy.com/');
+    await page.locator('[href="/practice"]').first().click();
+    const boolDialog = await page.locator('[role="dialog"]').isVisible(1000);
+    if(boolDialog){
+        await page.locator('input[placeholder="Enter your name"]').fill('Ambarish');
+        await page.locator('input[placeholder="Enter your email"]').fill('dash.ambarish15@gmail.com');
+        await page.getByRole('button',{name: "Submit"});
+
+    }
+    await page.locator('div.text-card-foreground').filter({hasText: 'Login Page Practice'}).locator('button').click();
+
 });
 
 test('Page Playwright Test',async ({page}) => {
