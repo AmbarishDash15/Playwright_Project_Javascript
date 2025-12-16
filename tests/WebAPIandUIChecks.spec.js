@@ -23,6 +23,7 @@ test('End to End using API Login', async({page}) => {
     const cartButton = page.locator('button.btn-custom i.fa-shopping-cart');
     const checkOutBtn = page.locator('li.totalRow button');
     const cartSection = page.locator('div.cart');
+    const cartItemName = page.locator('div.cartSection h3');
     const itemCount = await itemNameList.count();
     for(var i = 1;i <= itemCount;i++){
         if(await itemNameList.nth(i).locator('b').textContent() === itemToBuy){
