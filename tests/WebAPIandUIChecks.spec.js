@@ -31,6 +31,7 @@ test('End to End using API Login', async({page}) => {
         }
     }
     //verify added item on cart page
+    await page.getByText('Product Added To Cart').waitFor({state:'hidden'});
     await cartButton.click();
     await page.waitForLoadState('networkidle');
     await checkOutBtn.waitFor({state : 'visible'});

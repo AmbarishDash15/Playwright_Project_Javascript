@@ -16,7 +16,7 @@ test('Interact with Web elements',async({page}) => {
     const autoCompComboBx = page.locator('input#autocomplete');
     const countryList = page.locator('ul.ui-autocomplete li');
     await autoCompComboBx.pressSequentially(countryToSelect, {delay: 100});
-    await countryList.first().waitFor();
+    await countryList.first().waitFor({state:'visible'});
     const countryCount = await countryList.count();
     for(var i = 0;i<=countryCount;i++){
         if(await countryList.nth(i).textContent() === countryToSelect){
