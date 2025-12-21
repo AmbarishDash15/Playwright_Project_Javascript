@@ -1,7 +1,7 @@
 const {test, expect} = require('@playwright/test')
 
-test('End to End Client App',async({browser}) => {
-    const itemToBuy = 'ADIDAS ORIGINAL'; //testdata
+test.only('End to End Client App',async({browser}) => {
+    const itemToBuy = 'ZARA COAT 3'; //testdata
     const loginEmail = 'dash.ambarish15@gmail.com'; //test data
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -12,10 +12,10 @@ test('End to End Client App',async({browser}) => {
     const passwordField = page.locator('#userPassword');
     const loginButton = page.locator('#login');
     const itemNameList = page.locator('div.card-body');
-    const cartButton = page.locator('button.btn-custom i.fa-shopping-cart');
+    const cartButton = page.locator('button[routerlink*="cart"]');
     const cartItemName = page.locator('div.cartSection h3');
-    const checkOutBtn = page.locator('li.totalRow button');
-    const cartSection = page.locator('div.cart');
+    const checkOutBtn = page.locator('text=Checkout');
+    const cartItem = page.locator('div li');
     //entring credentials and logging in
     await eMailField.fill(loginEmail);
     await passwordField.fill('Password@123');
@@ -24,7 +24,7 @@ test('End to End Client App',async({browser}) => {
     await itemNameList.first().waitFor();
     //taking count and looping through elements 
     const itemCount = await itemNameList.count();
-    for(var i = 1;i <= itemCount;i++){
+    for(var i = 0;i < itemCount;i++){
         if(await itemNameList.nth(i).locator('b').textContent() === itemToBuy){
             await itemNameList.nth(i).locator('button.w-10').click();
             await expect(page.getByText('Product Added To Cart')).toBeVisible(); //verify success message on screen
@@ -34,8 +34,9 @@ test('End to End Client App',async({browser}) => {
     //verify added item on cart page
     await page.getByText('Product Added To Cart').waitFor({state:'hidden'});
     await cartButton.click();
-    await cartSection.waitFor({state : 'visible'});
-    expect(await cartItemName.textContent()).toContain(itemToBuy);
+    await page.waitForLoadState('networkidle');
+    await cartItem.first().waitFor();
+    await expect(cartItemName).toContainText(itemToBuy);
         
     //go to check out page and fill details
     const creditCardNoField = page.locator('div.form__cc input').first();
@@ -89,7 +90,7 @@ test('End to End Client App',async({browser}) => {
     const prodNameConfPage = page.locator('td.m-3 div.title');
     await placeOrderBtn.click();
     await page.waitForLoadState('networkidle');
-    expect(await orderConfirmationLabel.textContent()).toContain('Thankyou for the order');
+    await expect(orderConfirmationLabel).toContainText('Thankyou for the order');
     const orderIDFull = await orderIDField.textContent();
     const orderID = orderIDFull.trim().split(' ')[1];
     const ordersBtn = page.locator('button[routerlink*="/myorders"]');
@@ -98,7 +99,7 @@ test('End to End Client App',async({browser}) => {
     //Go to Orders page and verify order
     await ordersBtn.click();
     await page.waitForLoadState('networkidle');
-    expect(await page.locator('h1.ng-star-inserted').textContent()).toContain('Your Orders');
+    await expect( page.locator('h1.ng-star-inserted')).toContainText('Your Orders');
     const orderRows = page.locator('tr.ng-star-inserted');
     const orderCount = await orderRows.count();
     //Search for orders based on ORDER ID in table and click on Order details
@@ -117,7 +118,7 @@ test('End to End Client App',async({browser}) => {
     const orderSummItemName = page.locator('div.title');
     await page.waitForLoadState('networkidle');
     await orderSummaryLabel.waitFor({state: 'visible'});
-    expect(await orderSummaryLabel.textContent()).toContain('order summary');
+    await expect(orderSummaryLabel).toContainText('order summary');
     expect(await orderSummOrderID.textContent()).toContain(orderID);
     expect(await deliveryAddress.locator('p.text').first().textContent()).toContain(loginEmail);
     expect(await deliveryAddress.locator('p.text').last().textContent()).toContain(country);
