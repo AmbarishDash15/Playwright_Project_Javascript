@@ -51,7 +51,7 @@ test('Verify unauthorized error message for incorrect order', async({page}) => {
     expect(await unauthErrorLabel.textContent()).toBe('You are not authorize to view this order');
 })
 
-test.only('Verify abort calls',async({page})=> {
+test('Verify abort calls',async({page})=> {
     await page.addInitScript(value => {
         window.localStorage.setItem('token',value);
     },token);
