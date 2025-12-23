@@ -97,7 +97,7 @@ test('End to End using API Login', async({page}) => {
 
     //Go to Orders page and verify order
     await ordersBtn.click();
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('h1.ng-star-inserted')).toContainText('Your Orders');
     const orderRows = page.locator('tr.ng-star-inserted');
     const orderCount = await orderRows.count();
