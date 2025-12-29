@@ -1,20 +1,11 @@
 const {test, expect} = require('@playwright/test')
+test.describe.configure({mode: 'serial'});
 
 
 test('Browser Context Playwright Test',async ({browser}) => {
     const context = await browser.newContext({ignoreHTTPSErrors: true});
     const page = await context.newPage();
-    await page.goto('https://rahulshettyacademy.com/');
-    await page.locator('[href="/practice"]').first().click();
-    const boolDialog = await page.locator('[role="dialog"]').isVisible(1000);
-    if(boolDialog){
-        await page.locator('input[placeholder="Enter your name"]').fill('Ambarish');
-        await page.locator('input[placeholder="Enter your email"]').fill('dash.ambarish15@gmail.com');
-        await page.getByRole('button',{name: "Submit"});
-
-    }
-    await page.locator('div.text-card-foreground').filter({hasText: 'Login Page Practice'}).locator('button').click();
-
+    await page.goto('http://www.rahulshettyacademy.com/loginpagePractise/');
 });
 
 test('Page Playwright Test',async ({page}) => {
@@ -52,7 +43,7 @@ test('Get Login Credentials from page',async ({browser}) => {
     await page.waitForLoadState('networkidle');
     const loginStringArr = (await page.locator('.text-center.text-white').textContent()).split(' ');
     const userName = await loginStringArr[2];
-    const passWord = await loginStringArr[6].split(')')[0];
+    const passWord = await loginStringArr[5].split(')')[0];
     await console.log('User Name : '+userName+' and Password : '+passWord)
 });
 
@@ -71,7 +62,7 @@ test('Interact Login page UI elements',async ({browser}) => {
     await page.waitForLoadState('networkidle');
     const loginStringArr = (await page.locator('.text-center.text-white').textContent()).split(' ');
     const userNameStr = await loginStringArr[2];
-    const passWordStr = await loginStringArr[6].split(')')[0];
+    const passWordStr = await loginStringArr[5].split(')')[0];
     await userNameField.fill(userNameStr);
     await passwordField.fill(passWordStr);
     await rdBtnUser.click();
@@ -95,7 +86,7 @@ test('Get Login Credentials from page and Login',async ({browser}) => {
     await page.waitForLoadState('networkidle');
     const loginStringArr = (await page.locator('.text-center.text-white').textContent()).split(' ');
     const userNameStr = await loginStringArr[2];
-    const passWordStr = await loginStringArr[6].split(')')[0];
+    const passWordStr = await loginStringArr[5].split(')')[0];
     await userNameField.fill(userNameStr);
     await passwordField.fill(passWordStr);
     await chkBxTnC.check();
