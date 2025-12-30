@@ -1,15 +1,15 @@
 # This step is to sign-in to Azure to run tests from GitHub Action workflow. 
   # Choose how to set up authentication to Azure from GitHub Actions. This is one example. 
   name: Playwright Tests (Playwright Workspaces)
-  on:
-    push:
-      branches: [main, master]
-    pull_request:
-      branches: [main, master]
+  #on:
+    #push:
+      #branches: [main, master]
+    #pull_request:
+      #branches: [main, master]
 
-  permissions: # Required when using Microsoft Entra ID to authenticate
-    id-token: write
-    contents: read
+  #permissions: # Required when using Microsoft Entra ID to authenticate
+    #id-token: write
+    #contents: read
 
   jobs:
     test:
